@@ -8,5 +8,6 @@ export interface WordsState {
   palabraOculta: string
   intentos: number
   maxIntentos: number
+  pistas: string[]
   estadoJuego: EstadoJuego
 }

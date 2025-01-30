@@ -5,6 +5,7 @@ const initialState: WordsState = {
   palabraOculta: 'ejemplo',
   intentos: 0,
   maxIntentos: 6,
+  pistas: [''],
   estadoJuego: EstadoJuego.PLAYING,
 }
 
@@ -22,8 +23,15 @@ const wordsSlice = createSlice({
         }
       }
     },
+    showHint: (state) => {
+      if (state.intentos === 2) {
+        state.pistas = ['La palabra empieza por la letra E']
+      } else if (state.intentos === 4) {
+        state.pistas = ['La palabra termina por la letra O']
+      }
+    },
   },
 })
 
-export const { tryWord } = wordsSlice.actions
+export const { tryWord, showHint } = wordsSlice.actions
 export default wordsSlice.reducer
