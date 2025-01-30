@@ -44,26 +44,53 @@ const App = () => {
 
   return (
     <>
-      <h1>Adivina la palabra!</h1>
+      <h1 className="flex items-center justify-center p-4 text-4xl font-bold text-white ">
+        ¡Adivina la palabra!
+      </h1>
 
-      {message && <p>{message}</p>}
-      {estadoJuego !== EstadoJuego.WIN && intentos >= 2 && (
-        <p>🔎 Pista: {pistas[pistas.length - 1]}</p>
+      {message && (
+        <p
+          className={`${
+            estadoJuego === EstadoJuego.WIN
+              ? 'text-green-500 ml-5'
+              : estadoJuego === EstadoJuego.LOST
+              ? 'text-red-500 ml-5'
+              : 'text-red-300 ml-5'
+          }`}>
+          {message}
+        </p>
       )}
-      <form onSubmit={checkTry}>
+      {estadoJuego === EstadoJuego.LOST && (
+        <p className="text-white ml-5">La palabra era: {palabraOculta}</p>
+      )}
+      {estadoJuego === EstadoJuego.PLAYING && intentos >= 2 && (
+        <p className="text-yellow-300 ml-5">
+          🔎 Pista: {pistas[pistas.length - 1]}
+        </p>
+      )}
+
+      <form onSubmit={checkTry} className="text-white p-4">
         <input
           type="text"
           value={wordInput}
           onChange={(e) => setWordInput(e.target.value)}
           disabled={estadoJuego !== EstadoJuego.PLAYING}
           placeholder="Intenta adivinar la palabra!"
+          className="p-3 m-2 bg-gray-800 rounded-full disabled:cursor-not-allowed disabled:hover:bg-gray-600"
         />
-        <button type="submit" disabled={estadoJuego !== EstadoJuego.PLAYING}>
+        <button
+          type="submit"
+          className="p-3 m-2 bg-blue-500 rounded-full cursor-pointer hover:bg-blue-800 
+             disabled:cursor-not-allowed disabled:bg-gray-800 disabled:hover:bg-gray-600"
+          disabled={estadoJuego !== EstadoJuego.PLAYING}>
           Intentar
         </button>
       </form>
       {estadoJuego !== EstadoJuego.WIN && (
-        <p>Número de intentos restantes: {6 - intentos}</p>
+        <p className="ml-8 text-white">
+          Número de intentos restantes:{' '}
+          <span className="text-blue-400">{6 - intentos}</span>
+        </p>
       )}
     </>
   )
