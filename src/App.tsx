@@ -9,10 +9,9 @@ import Tries from './words/components/Tries'
 
 const App = () => {
   const dispatch = useAppDispatch()
-  const intentos = useAppSelector((state) => state.words.intentos)
-  const palabraOculta = useAppSelector((state) => state.words.palabraOculta)
-  const estadoJuego = useAppSelector((state) => state.words.estadoJuego)
-  const pistas = useAppSelector((state) => state.words.pistas)
+  const { intentos, palabraOculta, estadoJuego, pistas } = useAppSelector(
+    (state) => state.words
+  )
 
   const [wordInput, setWordInput] = useState('')
   const [message, setMessage] = useState<string | null>(null)
@@ -20,13 +19,13 @@ const App = () => {
   useEffect(() => {
     if (estadoJuego === EstadoJuego.LOST) {
       setMessage('❌ Has perdido, se acabaron los intentos!')
+    } else if (estadoJuego === EstadoJuego.WIN) {
+      setMessage('🪅 Has ganado!')
     }
   }, [estadoJuego])
 
   useEffect(() => {
-    if (intentos === 2) {
-      dispatch(showHint())
-    } else if (intentos === 4) {
+    if (intentos === 2 || intentos === 4) {
       dispatch(showHint())
     }
   }, [intentos, dispatch])
@@ -35,9 +34,7 @@ const App = () => {
     event.preventDefault()
     dispatch(tryWord(wordInput))
 
-    if (palabraOculta === wordInput) {
-      setMessage('🪅 Has ganado!')
-    } else {
+    if (palabraOculta !== wordInput) {
       setMessage(
         `❌ Inténtalo de nuevo, todavía te quedan ${6 - intentos - 1} intentos`
       )
